@@ -25,5 +25,13 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
+      - name: Azure Login
+        uses: Azure/login@v2.3.0
+        with:
+          client-id: 8cfc4dd9-4ed0-4f25-9ac9-238b3ac867b7
+          tenant-id: d338749b-64ea-4a23-a656-91a484ece1dc
+          subscription-id: 5b810eac-4419-4b63-bec3-e76a59097aef
+        
+          
 
           
