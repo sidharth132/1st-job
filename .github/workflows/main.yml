@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
+
 permissions:
-  id-token: write       # ✅ REQUIRED for OIDC (service principal login)
-  contents: read        # allows checkout to work
+  contents: read   # OIDC ke liye nahi chahiye, isliye id-token remove
 
 jobs:
   first-job-id:
@@ -15,21 +15,18 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Terraform
         uses: little-core-labs/install-terraform@v2.0.0
         with:
           version: v1.10.5
 
-      # ✅ Azure Login with Hardcoded Values (⚠️ Not Recommended for Public Repos)
+      # ✅ Azure Login using Secret (Recommended)
       - name: Azure Login
-        uses: Azure/login@v2.3.0
+        uses: azure/login@v2
         with:
-          client-id: 8cfc4dd9-4ed0-4f25-9ac9-238b3ac867b7
-          tenant-id: d338749b-64ea-4a23-a656-91a484ece1dc
-          subscription-id: 5b810eac-4419-4b63-bec3-e76a59097aef
-          allow-no-subscriptions: true
+          creds: ${{ secrets.AZURE_CREDENTIALS }}   # yaha tumne jo secret banaya hai uska naam likho
 
       - name: Terraform Init
         run: terraform init
